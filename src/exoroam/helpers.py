@@ -18,5 +18,9 @@ exocat = exodata.load_db_from_url()
 
 
 def getSurfaceGravity(planet_name):
-    planet = exocat.planetDict[planet_name]
-    return planet.calcSurfaceGravity().item()
+    try:
+        planet = exocat.planetDict[planet_name]
+        return planet.calcSurfaceGravity().item()
+    except KeyError:
+        print('Could not find planet `' + planet_name + '`. You may have mispelled the name.')
+        #print('Did you mean one of these: ' + exocat.searchPlanet(planet_name)...
