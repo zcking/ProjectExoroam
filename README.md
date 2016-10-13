@@ -1,5 +1,7 @@
 # Project ExoRoam
-An open-source interactive map of the universe.
+An open-source interactive map of the universe. 
+
+Note: you can view this site at https://zach-king.github.io/ProjectExoroam/
 
 ---
 
