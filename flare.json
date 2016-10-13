@@ -2,15 +2,19 @@
  "name": "flare",
  "children": [
   {
-   "name": "analytics",
+   "name": "Milky Way",
    "children": [
     {
-     "name": "cluster",
+     "name": "Our Solar System",
      "children": [
-      {"name": "AgglomerativeCluster", "size": 3938},
-      {"name": "CommunityStructure", "size": 3812},
-      {"name": "HierarchicalCluster", "size": 6714},
-      {"name": "MergeEdge", "size": 743}
+      {"name": "Earth", "size": 3938},
+      {"name": "Venus", "size": 3812},
+      {"name": "Mars", "size": 6714},
+      {"name": "Mercury", "size": 743},
+      {"name": "Uranus", "size": 1024},
+      {"name": "Neptune", "size": 2100},
+      {"name": "Jupiter", "size": 8700},
+      {"name": "Saturn", "size": 4040}
      ]
     },
     {
