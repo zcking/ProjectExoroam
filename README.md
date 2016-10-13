@@ -29,7 +29,9 @@ to keep the data up-to-date.
 ## Todo
 Keep in mind I am one person and can't work on this 24/7...
 * Design initial web UI with D3
+    * Base it off of this example: https://bl.ocks.org/mbostock/7607535
 * Design graph or other data structure to contain the planetary data
 * Optimize planetary container to only use data being requested at the time (i.e. only 
 load the solar system being looked at)
 * Minimap? 
+* Orbital lines for each planet?
