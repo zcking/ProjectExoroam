@@ -25,6 +25,10 @@ data = {"name": "universe", "children": []}
 # Add each system to the container
 for i, system in enumerate(exocat.systems[:10] + [exocat.systemDict['Sun']]):
     data["children"].append({"name": system.name, "children": [], "size": 50})
+    # The catalog names our system 'Sun' which is weird, 
+    # so rename it in the container
+    if system.name == 'Sun':
+        data["children"][i]["name"] = "Our Solar System"
     
     # And then add each planet for that corresponding system
     for planet in [p for p in exocat.planets if p.system.name == system.name]:
