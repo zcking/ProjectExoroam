@@ -31,32 +31,41 @@
 <svg width="960" height="960"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-
+// Grab the svg object for drawing
 var svg = d3.select("svg"),
     margin = 20,
     diameter = +svg.attr("width"),
     g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
+// Color control function -- needs modification to be random or somehow based on planetary data
 var color = d3.scaleLinear()
     .domain([-1, 5])
     .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
     .interpolate(d3.interpolateHcl);
 
+// Pack function -- what is d3.pack() ?
 var pack = d3.pack()
     .size([diameter - margin, diameter - margin])
     .padding(2);
 
+// Load the planetary json data
 d3.json("universe.json", function(error, root) {
   if (error) throw error;
 
+  // Get the root node
   root = d3.hierarchy(root)
       .sum(function(d) { return d.size; })
       .sort(function(a, b) { return b.value - a.value; });
 
+  // current 'focus' -> the node the user is currently on
   var focus = root,
       nodes = pack(root).descendants(),
       view;
 
+  // Add a circle for each node of the json data
+  // and color the node based off the depth of the node (that should be changed later...)
+  // onClick event zooms in on the clicked node if clicked on a different node; otherwise,
+  // stopPropagation() ?
   var circle = g.selectAll("circle")
     .data(nodes)
     .enter().append("circle")
@@ -64,6 +73,7 @@ d3.json("universe.json", function(error, root) {
       .style("fill", function(d) { return d.children ? color(d.depth) : null; })
       .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
 
+  // Add the text label to each node
   var text = g.selectAll("text")
     .data(nodes)
     .enter().append("text")
@@ -72,17 +82,22 @@ d3.json("universe.json", function(error, root) {
       .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
       .text(function(d) { return d.data.name; });
 
+  // Get the nodes and their text
   var node = g.selectAll("circle,text");
 
   svg
       .style("background", color(-1))
       .on("click", function() { zoom(root); });
 
+  // Start by zooming in on the root node
   zoomTo([root.x, root.y, root.r * 2 + margin]);
 
+  // Zoom function to zoom in on a given node
   function zoom(d) {
+    // Temporary copy focus; set focus to the clicked on node which was passed in to this function
     var focus0 = focus; focus = d;
 
+    // Transition -- not sure how this works...
     var transition = d3.transition()
         .duration(d3.event.altKey ? 7500 : 750)
         .tween("zoom", function(d) {
@@ -90,6 +105,7 @@ d3.json("universe.json", function(error, root) {
           return function(t) { zoomTo(i(t)); };
         });
 
+    // Only display the text for appropriate nodes...?
     transition.selectAll("text")
       .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
         .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
@@ -97,6 +113,7 @@ d3.json("universe.json", function(error, root) {
         .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
   }
 
+  // zoomTo function -- somehow zooms in on a given node...?
   function zoomTo(v) {
     var k = diameter / v[2]; view = v;
     node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
