@@ -38,9 +38,11 @@ var svg = d3.select("svg"),
     g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
 // Color control function -- needs modification to be random or somehow based on planetary data
+// I'm thinking make all systems one color, but randomize or use the data to color the planets
+// Docs for d3.scaleLinear: https://github.com/d3/d3-scale/blob/master/README.md#continuous-scales
 var color = d3.scaleLinear()
     .domain([-1, 5])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+    .range(["darkblue", "lightgreen"])
     .interpolate(d3.interpolateHcl);
 
 // Pack function -- what is d3.pack() ?
@@ -64,8 +66,7 @@ d3.json("universe.json", function(error, root) {
 
   // Add a circle for each node of the json data
   // and color the node based off the depth of the node (that should be changed later...)
-  // onClick event zooms in on the clicked node if clicked on a different node; otherwise,
-  // stopPropagation() ?
+  // onClick event zooms in on the clicked node if clicked on a different node
   var circle = g.selectAll("circle")
     .data(nodes)
     .enter().append("circle")
