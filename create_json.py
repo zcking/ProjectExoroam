@@ -23,7 +23,7 @@ exocat = exodata.load_db_from_url()
 data = {"name": "universe", "children": []}
 
 # Add each system to the container
-for i, system in enumerate(exocat.systems[:10] + [exocat.systemDict['Sun']]):
+for i, system in enumerate(exocat.systems[:99] + [exocat.systemDict['Sun']]):
     data["children"].append({"name": system.name, "children": [], "size": 50})
     # The catalog names our system 'Sun' which is weird, 
     # so rename it in the container
@@ -32,7 +32,11 @@ for i, system in enumerate(exocat.systems[:10] + [exocat.systemDict['Sun']]):
     
     # And then add each planet for that corresponding system
     for planet in [p for p in exocat.planets if p.system.name == system.name]:
-        planet_data = {"name": planet.name, "size": 20}
+        try:
+            s = planet.R.item() % 21
+        except:
+            s = 20
+        planet_data = {"name": planet.name, "size": s}
         data["children"][i]["children"].append(planet_data)
 
 
